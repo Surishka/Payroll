@@ -21,18 +21,8 @@ namespace Tests_Pikieva
         public void TestEmployeeToString()
         {
             int empId = 1;
-            string address = "Makha4kala";
-            string name = "Suriya";
-            string classification = "SYSadmin";
-            string schedule = "flexible";
-            string method = "cash";
-            StringBuilder e = new StringBuilder();
-            e.Append("Emp#: ").Append(empId).Append("   ");
-            e.Append(name).Append("   ");
-            e.Append(address).Append("   ");
-            e.Append("Paid ").Append(classification).Append("  ");
-            e.Append(schedule);
-            e.Append(" by ").Append(method);
+            Employee e = new Employee(empId, "Bob", "Home");
+            e.ToString();
         }
         [TestMethod]
         public void TestAddSalariedEmployee()
@@ -50,8 +40,19 @@ namespace Tests_Pikieva
             Assert.IsTrue(ps is MonthlySchedule);
             PaymentMethod pm = e.Method;
             Assert.IsTrue(pm is HoldMethod);
-
-
+        }
+        [TestMethod]
+        public void DeleteEmployee()
+        {
+            int empId = 4;
+            AddCommissionedEmployee t =new AddCommissionedEmployee(empId, "Bill", " Home ", 2500, 3.2);
+            t.Execute();
+            Employee e = PayrollDatabase.GetEmployee(empId);
+            Assert.IsNotNull(e);
+            DeleteEmployeeTransaction dt = new DeleteEmployeeTransaction(empId);
+            dt.Execute();
+            e = PayrollDatabase.GetEmployee(empId);
+            Assert.IsNull(e);
         }
     }
 }
